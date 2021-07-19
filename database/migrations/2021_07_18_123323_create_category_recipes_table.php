@@ -20,11 +20,11 @@ class CreateCategoryRecipesTable extends Migration
             $table->foreign('category_id')
                 ->references('id')
                 ->on('categories')
-                ->onCascade('delete');
+                ->onDelete('cascade');
             $table->foreign('recipe_id')
                 ->references('id')
                 ->on('recipes')
-                ->onCascade('delete');
+                ->onDelete('cascade');
         });
     }
 

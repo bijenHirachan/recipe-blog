@@ -12,4 +12,13 @@ class CategoryRecipe extends Model
     public $table = 'category_recipe';
 
     protected $fillable = ['recipe_id', 'category_id'];
+
+    // public function categories()
+    // {
+    //     return $this->belongsToMany(Category::class);
+    // }
+    // public function recipes()
+    // {
+    //     return $this->belongsToMany(Recipe::class);
+    // }
 }

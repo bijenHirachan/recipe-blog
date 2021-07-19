@@ -1,11 +1,24 @@
 <div>
     @foreach ($recipes as $recipe)
         <div class="flex flex-col md:grid grid-cols-2 my-2 md:p-5 bg-gray-100 rounded-lg" >
+        
             <div wire:click="showModal({{$recipe->id}})" class="cursor-pointer overflow-none bg-blue-100 rounded">
-             
+               
                 <div class="p-4" wire:click="showModal({{$recipe->id}})">
                     <img class="w-auto rounded-lg" src="{{asset('storage/photos/'.$recipe->image_path)}}" alt="">
                 </div>
+                @if (count($recipe->categories) > 0)
+                <div class="flex items-center mx-5">
+                    <h3 class="text-sm font-semibold underline">Categorieën :</h3>
+                    <div class="flex flex-wrap text-xs gap-2 ml-2 font-semibold" >
+                        @foreach ($recipe->categories as $item)
+                        <p>{{$item->category}}</p>
+                        @endforeach
+                    </div>
+                    
+                </div>
+                @endif
+               
                 <div class="p-4 flex flex-col items-center justify-center">
                     <h3 class="text-2xl font-semibold">{{$recipe->recipe_name}}</h3>
                     <p class="text-lg">{{$recipe->description}}</p>
@@ -33,7 +46,7 @@
             {{-- <div>
                 <span>Categories</span>
                 @foreach ($categories as $category)
-                    <h3>{{$category->category_id}}</h3>
+                    <h3>{{$category->categories->category}}</h3>
                 @endforeach
             </div> --}}
         </x-slot>

@@ -15,7 +15,7 @@ class ShowRecipes extends Component
     public $modalDescription;
     public $showModal = false;
 
-    public $categories = [];
+    // public $categories = [];
    
     public $ingredients = [];
     public $steps = [];

@@ -9,63 +9,56 @@
         
 
                 <!-- component -->
-        <div class="table w-full p-2">
-            <table class="w-full border">
-                <thead>
-                    <tr class="bg-gray-50 border-b">
-                    
-                        <th class="p-2 border-r cursor-pointer text-sm font-thin text-gray-500">
-                            <div class="flex items-center justify-center">
-                                ID
-                        
-                            </div>
-                        </th>
-                        <th class="p-2 border-r cursor-pointer text-sm font-thin text-gray-500">
-                            <div class="flex items-center justify-center">
-                                Recept
-                        
-                            </div>
-                        </th>
-                        <th class="p-2 border-r cursor-pointer text-sm font-thin text-gray-500">
-                            <div class="flex items-center justify-center">
-                                Foto
-                        
-                            </div>
-                        </th>
-                        <th class="p-2 border-r cursor-pointer text-sm font-thin text-gray-500">
-                            <div class="flex items-center justify-center">
-                                Omschrijving
-                        
-                            </div>
-                        </th>
-                        <th class="p-2 border-r cursor-pointer text-sm font-thin text-gray-500">
-                            <div class="flex items-center justify-center">
-                                Actie
-                        
-                            </div>
-                        </th>
+        <div class="hidden lg:block w-full p-2">
+
+            <table class="w-full">
+                <thead class="w-full">
+                    <tr class="grid grid-cols-12 text-left bg-blue-100">
+                        <th class="py-1 col-span-1 border-2 border-gray-500 flex justify-center items-center">ID</th>
+                        <th class="py-1 col-span-2 border-2 border-gray-500 flex justify-center items-center">Foto</th>
+                        <th class="py-1 col-span-2 border-2 border-gray-500 flex justify-center items-center">Recept</th>
+                        <th class="py-1 col-span-4 border-2 border-gray-500 flex justify-center items-center">Omschrijving</th>
+                        <th class="py-1 col-span-3 border-2 border-gray-500 flex justify-center items-center">Actie</th>
                     </tr>
-                </thead>
-                <tbody>
-                @foreach ($recipes as $recipe)
-                    <tr class="bg-gray-100 text-center border-b text-sm text-gray-600">
-                        
-                        <td class="p-2 border-r">{{ $recipe->id }}</td>
-                        <td class="p-2 border-r">{{ $recipe->recipe_name }}</td>
-                        <td class="p-2 border-r flex justify-center"><img class="rounded-2xl w-36 h-24 " src="{{asset('storage/photos/'.$recipe->image_path)}}" alt=""></td>
-                        <td class="p-2 border-r">{{ $recipe->description }}</td>
-                        <td class="">
-                            <button class="bg-green-400 px-2 py-1 rounded text-white" wire:click="editRecipe({{$recipe->id}})">Edit</button>
-                            <button class="bg-red-400 px-2 py-1 rounded text-white" wire:click="deleteRecipe({{$recipe->id}})">Delete</button>
-                            <button class="bg-indigo-400 px-2 py-1 rounded text-white" wire:click="addIngredientsAndSteps({{$recipe->id}})">Add ingredients and steps</button>
-                        </td>
-                    </tr>
-                @endforeach 
-                
-        
+                </thead> 
+                <tbody class="w-full">
+                    @foreach ($recipes as $recipe)
+                        <tr class="grid grid-cols-12 ">
+                            <td class="col-span-1 border-2 border-gray-400  flex justify-center items-center">{{$recipe->id}}</td>
+                            <td class="col-span-2 border-2 border-gray-400 py-2 flex justify-center items-center"><img class="w-36 h-24 rounded" src="{{asset('storage/photos/'.$recipe->image_path)}}" alt=""></td>
+                            <td class="col-span-2 border-2 border-gray-400 pl-2 flex justify-start items-center">{{$recipe->recipe_name}}</td>
+                            <td class="col-span-4 border-2 border-gray-400 pl-2 flex justify-start items-center">{{$recipe->description}}</td>
+                            <td class="col-span-3 border-2 border-gray-400 flex flex-col justify-center ">
+                                <button class="bg-green-400 mx-2 my-1 rounded font-bold text-gray-100 hover:bg-green-600" wire:click="editRecipe({{$recipe->id}})">Edit</button>
+                                <button class="bg-red-400 mx-2 my-1 rounded font-bold text-gray-100 hover:bg-red-600" wire:click="deleteRecipe({{$recipe->id}})">Delete</button>
+                                <button class="bg-indigo-400 mx-2 my-1 rounded font-bold text-gray-100 hover:bg-indigo-600" wire:click="addIngredientsAndSteps({{$recipe->id}})">Add ingredients and steps</button>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
-            </table>
+            </table> 
+
+
         </div>
+
+        <div class="mt-3 lg:hidden flex flex-col">
+            @foreach ($recipes as $recipe)
+                <div class="bg-blue-100 mb-2 rounded p-5 self-center">
+                    <div class="flex flex-col"><div class="font-bold">{{$recipe->recipe_name}}</div></div>
+                    <div class="flex flex-col"><div ><img class="rounded" src="{{asset('storage/photos/'.$recipe->image_path)}}" alt=""></div></div>
+                    <div class="flex flex-col"><div class=" font-bold">Omschrijving</div><div>{{$recipe->description}}</div></div>
+                    <div class="flex flex-col">
+                        <div class=" font-bold">Actie</div>
+                        <div class="flex gap-4">
+                            <button class="font-bold text-green-500 hover:text-green-800" wire:click="editRecipe({{$recipe->id}})">Edit</button>
+                            <button class="font-bold text-red-500 hover:text-red-800" wire:click="deleteRecipe({{$recipe->id}})">Delete</button>
+                            <button class="font-bold text-indigo-500 hover:text-indigo-800" wire:click="addIngredientsAndSteps({{$recipe->id}})">Add ingredients and steps</button>
+                        </div>
+                    </div>
+              
+                </div>
+            @endforeach
+        </div> 
      </div>
       
        

@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Comment;
+use App\Models\Recipe;
 
 class Comments extends Component
 {
@@ -46,6 +47,20 @@ class Comments extends Component
             'comment_body'=>$this->comment
         ]);
         
+        foreach(Recipe::all() as $recipe)
+        {
+            $sum = (int)Comment::where('recipe_id', $recipe->id)->sum('stars');
+            $totalComments = (int)count(Comment::where('recipe_id', $recipe->id)->get());
+            
+            $avgStars = (int)round($totalComments != 0 ? $sum/$totalComments : 0);
+ 
+         //    dd($avgStars);
+            $recipe->update([
+                'avg_stars'=> $avgStars
+            ]);
+ 
+     
+        }
         $this->comment = '';
         $this->starSelected = '';
     }

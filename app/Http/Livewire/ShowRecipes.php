@@ -21,19 +21,10 @@ class ShowRecipes extends Component
     public $ingredients = [];
     public $steps = [];
 
-    public $avgStarsList = [  ];
-
-    protected $listeners = ['commentAdded'=>'$refresh'];
-
-    // public function mount()
-    // {
-    //     $this->avgStarsForEachRecipe();
-    // }
-
+    
     public function showModal($id)
     {
         $currentRecipe = Recipe::find($id);
-        $this->calculateAvgStars($id);
         $this->modalRecipeForCategories = Recipe::find($id)->categories;
         $this->modalRecipe = $currentRecipe->recipe_name;
         $this->modalPhoto = $currentRecipe->image_path;
@@ -46,20 +37,6 @@ class ShowRecipes extends Component
 
     }
 
-    public function calculateAvgStars($id)
-    {
-        $comments = Comment::where('recipe_id',$id)->get();
-        $total = 0;
-        foreach($comments as $comment)
-        {
-            $total = $total + $comment->stars ;
-        }
-
-        $averageStars = $total / count($comments);
-        return $averageStars;
-
-
-    }
 
 
     public function avgStarsForEachRecipe()
@@ -75,7 +52,6 @@ class ShowRecipes extends Component
     {
         return view('livewire.show-recipes',[
             'recipes'=>Recipe::all(),
-            'avgStars'=>$this->avgStarsForEachRecipe()
         ]);
     }
 }

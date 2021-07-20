@@ -17,6 +17,7 @@ class CreateCommentsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('recipe_id');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('stars');
             $table->text('comment_body');
             $table->timestamps();
             $table->foreign('recipe_id')

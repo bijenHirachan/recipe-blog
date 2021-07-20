@@ -1,9 +1,9 @@
 
-<div>
+<div class="py-10">
    
 
     <div class="flex flex-col gap-2 md:flex-row md:gap-24 mb-10 bg-blue-100 p-5 rounded">
-        <div class="w-1/4">
+        <div class="w-full md:w-2/5 ">
             <form wire:submit.prevent="addCategory" class="flex ">
                 <div class="flex flex-col">
                     @error('name')
@@ -16,8 +16,8 @@
             </form>
         </div>
         
-        <div class="w-3/4 p-4 ">
-            <h2 class="text-center text-3xl mb-5">Onze Categorieën</h2>
+        <div class="w-full md:w-3/5 ">
+            <h2 class="text-center text-3xl mb-3">Onze Categorieën</h2>
             <div class="flex flex-wrap items-center">
                 @forelse ($categories as $category)
                 <div class="flex items-center bg-yellow-500 m-1 px-2 py-1">

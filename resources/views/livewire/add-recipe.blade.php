@@ -3,8 +3,7 @@
   
     <div class="">
         <div class="flex justify-end">
-            <x-jet-button class="mr-2"  wire:click="showCategoryModal">Categorieën</x-jet-button>
-            <x-jet-button  wire:click="showRecipeModal">Voeg een recept toe</x-jet-button>
+            <button class="bg-yellow-500 px-2 py1 rounded font-semibold text-gray-100 hover:bg-yellow-400" wire:click="showRecipeModal">Voeg een recept toe</button>
         </div>
      <div>
         
@@ -158,12 +157,62 @@
       {{-- start ingredient and steps add modal --}}
       <x-jet-dialog-modal wire:model="addModal">
         <x-slot name="title">
-            <h3 class="text-xl font-semibold">{{ __('Voeg benodigheden en stappen toe') }}</h3>
+            <h3 class="text-xl font-semibold">{{ __('Voeg benodigheden en stappen toe') }} # {{$recipeName}}</h3>
         </x-slot>
 
         <x-slot name="content">
+            {{-- already added ingredients and steps --}}
+            <div class="grid grid-cols-2 my-2">
+                <div class="bg-gray-100 rounded-lg p-2 mr-1">
+                  <h3 class="font-semibold text-center mb-1">Benodigheden Toegevoegd</h3>
+                  @if (count($addedIngredients) > 0)
+                    @foreach ($addedIngredients as $ingredient )
+                    <div class="flex justify-between">
+                                             
+                            <h2 class="flex items-center gap-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" />
+                                </svg> 
+                                {{$ingredient->ingredient}}
+                            </h2>
+                            <div class="flex gap-1">
+                                <h2>{{$ingredient->quantity}}</h2>
+                                <div>
+                                    <svg wire:click="deleteAddedIngredient({{$ingredient->id}})" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                      </svg>
+                                </div>
+                            </div>
+                          
+                    </div>
+                    @endforeach
+                  @endif
+                </div>
+                <div class="bg-gray-100 rounded-lg p-2 ml-1">
+                  <h3 class="font-semibold text-center mb-1">Stappen Toegevoegd</h3>
+                  <div>
+                    @if (count($addedSteps) > 0)
+                        @foreach ($addedSteps as $key=>$step )
+                        <div class="flex gap-2">
+                            <div class="">
+                                <svg wire:click="deleteAddedStep({{$step->id}})" xmlns="http://www.w3.org/2000/svg" class="cursor-pointer text-red-500 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                  </svg>
+                            </div>
+                            <h2 class="font-bold"> {{++$key}}</h2>
+                            <h2>{{$step->step}} <span class="text-sm font-semibold text-green-700">[ Order: {{$step->order}}]</span></h2>
+                            
+                        </div>
+                       
+                        @endforeach
+                    @endif
+                  </div>
+                  
+                </div>
+            </div>
+
             <div>
-                <form class="flex flex-col gap-8" wire:submit.prevent="saveIngredientsAndSteps">
+                <form class="flex flex-col gap-8" wire:submit.prevent="saveIngredients">
                     <div>
                         <div class="grid grid-cols-5 gap-1">
                             <div class="flex  flex-col col-span-2">
@@ -192,6 +241,11 @@
                         </div>
                         @endforeach
                     </div>
+                    <div class="my-3">
+                        <button class="bg-indigo-400 text-white uppercase font-semibold rounded px-2 py-1" type="submit">Save</button>
+                    </div>
+                </form>
+                <form wire:submit.prevent="saveSteps">
                      <div>     
                         <div class="grid grid-cols-5 gap-1" >
                             <div class="flex  flex-col col-span-1">

@@ -1,4 +1,4 @@
-<div class="w-full p-3 relative" x-data="{showComments:false}">
+<div class="w-full p-3 " x-data="{showComments:false}">
     <form wire:submit.prevent="addComment">
         <div>
             <div class="py-3 flex justify-between items-center">
@@ -24,20 +24,20 @@
         </div>
         <h2>Schrijf je reactie:</h2>
         <div>
-            <textarea class="w-full focus:outline-white rounded" wire:model="comment"></textarea>
+            <textarea  class="w-full focus:outline-white rounded" wire:model="comment"></textarea>
         </div>
 
         <div class="flex justify-end">
-            <input class="bg-blue-200 font-semibold rounded uppercase px-2 py-1 cursor-pointer " type="submit" value="Post">
+            <input @click="showComments = !showComments" class="bg-blue-200 font-semibold rounded uppercase px-2 py-1 cursor-pointer " type="submit" value="Post">
         </div>
     </form>
     <div class="text-xs font-semibold underline ">
         <span @click="showComments =! showComments" class="cursor-pointer">{{count($comments)}} Comments</span>
     </div>
-    <div x-show="showComments" class="absolute top-0 right-10 shadow-sm">
+    <div x-show="showComments" class="relative">
         @if (count($comments) > 0)
             @foreach ($comments as $comment)
-                <div class="bg-blue-100 p-2 rounded mt-1">
+                <div class="bg-blue-100 p-2 rounded mt-1 ">
                     <div class="flex justify-between">
                         <span class="font-semibold text-sm">{{$comment->user->name}}</span>
                         <div class="flex">

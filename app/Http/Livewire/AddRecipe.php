@@ -19,18 +19,26 @@ class AddRecipe extends Component
     public $index = 1;
     public $inputs = [];
 
+    public $addedIngredients=[];
+
     //for steps
     public $stepIndex = 1;
     public $stepInputs = [];
 
+    public $addedSteps = [];
+
     public $modalId;
-    public $modalPhoto;
+    public $modalPhoto; //for edit recipe
+
     public $recipeModal = false;
     
     public $addModal = false;
 
+    
+
     //to add ingredients and steps
     public $recipeId;
+    public $recipeName;
 
     public function add($index)
     {
@@ -129,19 +137,19 @@ class AddRecipe extends Component
         $this->stepInputs = [];
         $this->recipeId = $id;
         $this->addModal = true;
+        $this->recipeName = Recipe::find($id)->recipe_name;
+        $this->addedIngredients = Ingredient::where('recipe_id', $this->recipeId)->get();
+        $this->addedSteps = Step::where('recipe_id',$this->recipeId)->orderBy('order','ASC')->get();
     }
 
-    public function saveIngredientsAndSteps()
+    public function saveIngredients()
     {
         $this->validate([
             'ingredient.0' => 'required',
             'quantity.0' => 'required',
             'ingredient.*' => 'required',
             'quantity.*' => 'required',
-            'order.0' => 'required',
-            'step.0' => 'required',
-            'order.*' => 'required',
-            'step.*' => 'required',
+            
         ]);
 
         foreach($this->ingredient as $key=>$value){
@@ -152,6 +160,25 @@ class AddRecipe extends Component
             ]);
         }
 
+       
+
+        $this->inputs = [];
+
+        $this->reset();
+        
+
+
+    }
+
+    public function saveSteps()
+    {
+        $this->validate([
+            'order.0' => 'required',
+            'step.0' => 'required',
+            'order.*' => 'required',
+            'step.*' => 'required',
+        ]);
+
         foreach($this->step as $key=>$value){
             Step::create([
                 'recipe_id'=>$this->recipeId,
@@ -160,12 +187,26 @@ class AddRecipe extends Component
             ]);
         }
 
-        $this->inputs = [];
         $this->stepInputs = [];
 
         $this->reset();
 
 
+    }
+
+
+    //delete added ingredients and steps
+
+    public function deleteAddedIngredient($id)
+    {
+        Ingredient::find($id)->delete();
+        $this->addedIngredients = Ingredient::where('recipe_id', $this->recipeId)->get();
+    }
+
+    public function deleteAddedStep($id)
+    {
+        Step::find($id)->delete();
+        $this->addedSteps = Step::where('recipe_id',$this->recipeId)->orderBy('order','ASC')->get();
     }
 
     public function render()

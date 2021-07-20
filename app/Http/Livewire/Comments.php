@@ -11,6 +11,7 @@ class Comments extends Component
     public $comment;
     public $starSelected;
 
+    // protected $listeners = ['commentAdded'=>'$refresh'];
 
     public function selectStar($item)
     {
@@ -45,8 +46,8 @@ class Comments extends Component
             'comment_body'=>$this->comment
         ]);
         
-        $this->reset();
-        $this->emitUp('commentAdded');
+        $this->comment = '';
+        $this->starSelected = '';
     }
 
     public function render()

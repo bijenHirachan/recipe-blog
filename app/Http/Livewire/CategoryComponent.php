@@ -13,6 +13,7 @@ class CategoryComponent extends Component
 
     public $name;
     public $selectedRecipe;
+    // public $selectedRecipeCategories = [];
     public $recipeId;
     public $selectedCategories = [];
     public $selectedCatIds = [];
@@ -20,7 +21,7 @@ class CategoryComponent extends Component
     public function addCategory()
     {
         $this->validate([
-            'name'=>'required'
+            'name'=>'required|unique:categories,category'
         ]);
 
         Category::create([
@@ -39,7 +40,8 @@ class CategoryComponent extends Component
     public function selectRecipe($id)
     {
         $this->recipeId = $id;
-        $this->selectedRecipe = Recipe::find($id)->recipe_name;
+        $this->selectedRecipe = Recipe::find($id);
+        // $this->selectedRecipeCategories = Categories::find($id)->
         
     }
 
@@ -67,6 +69,11 @@ class CategoryComponent extends Component
                     'category_id'=>$id
                 ]);
             }
+            session()->flash('success','Categorieën toegevoegd aan het recept.');
+
+        }
+        else{
+            session()->flash('failure','Recept en categorieën moeten worden geselecteerd.');
         }
 
         $this->selectedCategories = [];

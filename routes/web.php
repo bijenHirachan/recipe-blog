@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\DownloadController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,3 +26,9 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/voeg-recept-toe', functio
 Route::middleware(['auth:sanctum', 'verified'])->get('/categories', function () {
     return view('categories');
 })->name('categories');
+
+
+
+Route::get('/download/recipe/{id}',[DownloadController::class, 'downloadPdf']);
+Route::get('/download',[DownloadController::class,'index'])->name('download-recipes');
+Route::get('/download/{id}',[DownloadController::class,'show']);

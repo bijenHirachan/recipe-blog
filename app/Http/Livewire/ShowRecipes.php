@@ -9,6 +9,7 @@ use App\Models\Step;
 use App\Models\CategoryRecipe;
 use App\Models\Comment;
 
+
 class ShowRecipes extends Component
 {
     public $modalRecipe;
@@ -63,10 +64,14 @@ class ShowRecipes extends Component
         return $this->avgStarsList;
     }
 
+    
+
     public function render()
     {
         return view('livewire.show-recipes',[
             'recipes'=>$this->getRecipes(),
         ]);
     }
+
+    
 }

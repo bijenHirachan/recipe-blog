@@ -1,6 +1,6 @@
 <div>
     <div class="flex justify-end my-4">
-        <input class="focus:outline-none rounded shadow" type="search" wire:model.debounce.1000ms="search" placeholder="Zoek recept">
+        <input class="focus:outline-none rounded shadow bg-blue-100" type="search" wire:model.debounce.1000ms="search" placeholder="Zoek recept">
     </div>
     @forelse ($recipes as $recipe)
         <div class="flex flex-col md:grid grid-cols-2 my-2 md:p-5 bg-gray-100 rounded-lg" >
@@ -65,7 +65,7 @@
     {{-- show single modal --}}
     <x-jet-dialog-modal wire:model="showModal">
         <x-slot name="title">
-            <h3 class="text-3xl font-semibold">{{ $modalRecipe }}</h3>
+            <h3 class="text-3xl font-semibold">{{ $modalRecipe }} </h3>
             <div>
                 <span class="text-sm font-semibold">Categorieën:</span>
                 @if (count($modalRecipeForCategories)>0)
@@ -74,7 +74,7 @@
                         
                     @empty
                         <p>Geen categorieën</p>
-                    @endforelse ()
+                    @endforelse
                    
                 @endif
             
@@ -93,14 +93,14 @@
               <div class="bg-gray-100 rounded-lg p-2 mr-1">
                 <h3 class="font-semibold text-center mb-1">Benodigheden</h3>
                 @foreach ($ingredients as $ingredient )
-                <div class="flex justify-between">
+                <div class="flex flex-col sm:flex-row justify-between">
                     <h2 class="flex items-center gap-1">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" />
                       </svg> 
                       {{$ingredient->ingredient}}
                     </h2>
-                    <h2>{{$ingredient->quantity}}</h2>
+                    <h2 class="ml-4 text-green-500">{{$ingredient->quantity}}</h2>
                 </div>
                 @endforeach
               </div>

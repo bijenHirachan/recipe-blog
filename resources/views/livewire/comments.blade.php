@@ -62,7 +62,12 @@
             </div>
             <h2>Schrijf je reactie:</h2>
             <div>
-                <textarea  class="w-full focus:outline-white rounded" wire:model="comment"></textarea>
+                <textarea  class="bg-blue-50 w-full focus:outline-white rounded" wire:model.lazy="comment"></textarea>
+            </div>
+            <div>
+                @error('comment')
+                    <span class="text-xs text-red-600">{{$message}}</span>
+                @enderror
             </div>
 
         

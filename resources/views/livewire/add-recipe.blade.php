@@ -2,8 +2,8 @@
 
   
     <div class="">
-        <div class="flex justify-center   lg:justify-between  px-2">
-            <input class="rounded" type="search" wire:model.debounce.1000ms="search" placeholder="Zoek recept" >
+        <div class="flex flex-col sm:flex-row gap-3 justify-center   lg:justify-between  px-2">
+            <input class="rounded bg-blue-100" type="search" wire:model.debounce.1000ms="search" placeholder="Zoek recept" >
             <button class="bg-yellow-500 ml-1 px-2 py1 rounded font-semibold text-gray-100 hover:bg-yellow-400" wire:click="showRecipeModal">Voeg een recept toe</button>
         </div>
         
@@ -57,7 +57,7 @@
                     <div class="my-2">{{substr($recipe->description, 0, 100)}}..</div>     
                     <div class="flex gap-4">
                         <button class="font-bold text-green-500 hover:text-green-800" wire:click="editRecipe({{$recipe->id}})">Edit</button>
-                        <button class="font-bold text-red-500 hover:text-red-800" wire:click="deleteRecipe({{$recipe->id}})">Delete</button>
+                        <button class="font-bold text-red-500 hover:text-red-800" wire:click="confirmDeleteRecipe({{$recipe->id}})">Delete</button>
                         <button class="font-bold text-indigo-500 hover:text-indigo-800" wire:click="addIngredientsAndSteps({{$recipe->id}})">Add ingredients and steps</button>
                     </div>
                
@@ -90,15 +90,15 @@
                 @if ($modalId)
                     Foto:
                     <img class="w-36 h-24" src="{{ asset('storage/photos/'.$modalPhoto) }}">
-                    {{-- @if ($photo)
+                    @if ($updatedPhoto)
                     Photo Preview:
-                    <img class="w-36 h-24" src="{{ $photo->temporaryUrl() }}">
+                    <img class="w-36 h-24" src="{{ $updatedPhoto->temporaryUrl() }}">
                     <div class="absolute top-0 right-1">
                         <svg wire:click ="cancelPhoto"  xmlns="http://www.w3.org/2000/svg" class="cursor-pointer h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </div>
-                    @endif --}}
+                    @endif
                 @else
                     @if ($photo)
                     Photo Preview:
@@ -108,42 +108,70 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </div>
-                    @endif
+                   @endif
                 @endif
 
              
             </div>
-           <form wire:submit.prevent="save">
-                    <div class="flex my-2">
-                        @if (!$modalId)
+                @if ($modalId)
+                    <form wire:submit.prevent="updateRecipe">
+                        <div class="flex my-2">
+                        
+                            <label for="photo" class="w-36 font-bold hover:text-gray-400 cursor-pointer">Upload Foto</label>
+                            <input type="file" id="photo" wire:model="updatedPhoto" hidden>
+                            @error('updatedPhoto') <span class="error my-2 text-xs text-red-600">{{ $message }}</span> @enderror
+                            
+                        
+                        </div>
+                        <div  class="flex flex-col ">
+                            <label for="recipe">Recept</label>
+                            <input type="text" wire:model="recipe" class="focus:outline-none rounded">
+                            @error('recipe') <span class="error my-2 text-xs text-red-600">{{ $message }}</span> @enderror
+                        
+                        </div>
+                        <div class="flex flex-col focus:outline-none">
+                            <label for="description">Omschrijving</label>
+                            <textarea wire:model="description" cols="30"  class="focus:outline-none overflow-y-scroll rounded"></textarea>
+                            @error('description') <span class="error my-2 text-xs text-red-600">{{ $message }}</span> @enderror
+                        
+                        </div>
+                    
+                        <button type="submit" class="mt-3 px-2 py-1 bg-blue-500 text-gray-50 rounded">
+                            Update
+                      </button>
+                    </form>
+                @else
+                    <form wire:submit.prevent="saveRecipe">
+                        <div class="flex my-2">
+                        
                             <label for="photo" class="w-36 font-bold hover:text-gray-400 cursor-pointer">Upload Foto</label>
                             <input type="file" id="photo" wire:model="photo" hidden>
-                            @error('photo') <span class="error my-2">{{ $message }}</span> @enderror
-                        @endif
-                      
-                    </div>
-                    <div  class="flex flex-col ">
-                        <label for="recipe">Recept</label>
-                        <input type="text" wire:model="recipe" class="focus:outline-none rounded">
-                    </div>
-                    <div class="flex flex-col focus:outline-none">
-                        <label for="description">Omschrijving</label>
-                        <textarea wire:model="description" cols="30"  class="focus:outline-none overflow-y-scroll rounded"></textarea>
-                    </div>
-
-            
-
-                    @if ($modalId)
-                        <x-jet-secondary-button class="bg-green-400 text-white  my-2" wire:click="updateRecipe" wire:loading.attr="disabled">
-                            {{ __('Update') }}
-                        </x-jet-secondary-button>
-                    @else
-                        <x-jet-secondary-button class="bg-green-400 text-white  my-2" wire:click="save" wire:loading.attr="disabled">
-                            {{ __('Save') }}
-                        </x-jet-secondary-button>
-                    @endif
-                   
-            </form>
+                            @error('photo') <span class="error my-2 text-xs text-red-600">{{ $message }}</span> @enderror
+                            
+                        
+                        </div>
+                        <div  class="flex flex-col ">
+                            <label for="recipe">Recept</label>
+                            <input type="text" wire:model="recipe" class="focus:outline-none rounded">
+                            @error('recipe') <span class="error my-2 text-xs text-red-600">{{ $message }}</span> @enderror
+                        
+                        </div>
+                        <div class="flex flex-col focus:outline-none">
+                            <label for="description">Omschrijving</label>
+                            <textarea wire:model="description" cols="30"  class="focus:outline-none overflow-y-scroll rounded"></textarea>
+                            @error('description') <span class="error my-2 text-xs text-red-600">{{ $message }}</span> @enderror
+                        
+                        </div>
+                    
+                      <button type="submit" class="mt-3 px-2 py-1 bg-blue-500 text-gray-50 rounded">
+                            Save
+                      </button>
+                    </form>
+                
+                
+                @endif
+           
+           
           
         </x-slot>
 
@@ -154,7 +182,7 @@
          
         </x-slot>
     </x-jet-dialog-modal>
-    {{-- end create update modal --}}
+    {{-- end create/update modal --}}
 
 
 
@@ -171,7 +199,7 @@
                   <h3 class="font-semibold text-center mb-1">Benodigheden Toegevoegd</h3>
                   @if (count($addedIngredients) > 0)
                     @foreach ($addedIngredients as $ingredient )
-                    <div class="flex justify-between">
+                    <div class="flex flex-col sm:flex-row justify-between">
                                              
                             <h2 class="flex items-center gap-1">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
@@ -180,7 +208,7 @@
                                 {{$ingredient->ingredient}}
                             </h2>
                             <div class="flex gap-1">
-                                <h2>{{$ingredient->quantity}}</h2>
+                                <h2 class="text-green-500 ml-4">{{$ingredient->quantity}}</h2>
                                 <div>
                                     <svg wire:click="deleteAddedIngredient({{$ingredient->id}})" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500 hover:text-red-700 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -298,5 +326,25 @@
     </x-jet-dialog-modal>
     {{-- end add  modal --}}
 
- 
+
+    {{-- delete modal --}}
+    <x-jet-confirmation-modal wire:model="deleteModal">
+        <x-slot name="title">
+            {{ __('Verwijderen') }} recept #{{$deleteId}}
+        </x-slot>
+
+        <x-slot name="content">
+            {{ __('Weet je zeker dat je dit recept wilt verwijderen?') }}
+        </x-slot>
+
+        <x-slot name="footer">
+            <x-jet-secondary-button wire:click="$toggle('deleteModal')" wire:loading.attr="disabled">
+                {{ __('Annuleren') }}
+            </x-jet-secondary-button>
+
+            <x-jet-danger-button class="ml-2" wire:click="deleteRecipe({{$deleteId}})" wire:loading.attr="disabled">
+                {{ __('Verwijderen') }}
+            </x-jet-danger-button>
+        </x-slot>
+    </x-jet-confirmation-modal>
 </div>

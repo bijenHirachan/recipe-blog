@@ -11,10 +11,15 @@ class AddRecipe extends Component
 {
     use WithFileUploads;
 
-    public $photo, $recipe, $description;
+    public $photo, $recipe, $description , $updatedPhoto;
     public $ingredient, $quantity;
     public $order, $step;
 
+    public $recipeModal = false;
+    
+    public $addModal = false;
+
+    public $deleteModal = false;
     // for ingredients
     public $index = 1;
     public $inputs = [];
@@ -30,9 +35,9 @@ class AddRecipe extends Component
     public $modalId;
     public $modalPhoto; //for edit recipe
 
-    public $recipeModal = false;
+    public $deleteId;
+
     
-    public $addModal = false;
     
 
     //search
@@ -74,7 +79,7 @@ class AddRecipe extends Component
         unset($this->stepInputs[$stepIndex]);
     }
 
-    public function save(){
+    public function saveRecipe(){
         // dd($this->photo->hashName());
         $this->validate([
             'photo' => 'image|max:1024', // 1MB Max
@@ -105,33 +110,51 @@ class AddRecipe extends Component
         $this->description = $currentRecipe->description;
     
         $this->recipeModal = true;
+        $this->resetValidation();
     }
 
 
     public function updateRecipe()
     {
+        // dd($this->updatedPhoto);
         $this->validate([
             'recipe'=> 'required',
             'description'=> 'required',
         ]);
+        if(!empty($this->updatedPhoto)){
+            $this->updatedPhoto->store('photos','public');
+        }
 
         Recipe::find($this->modalId)->update([
             'recipe_name'=>$this->recipe,
             'description'=>$this->description,
+            'image_path'=>$this->updatedPhoto == null ? $this->modalPhoto : $this->updatedPhoto->hashName()
         ]);
 
         $this->reset();
         $this->recipeModal = false;
     }
 
+
+    public function confirmDeleteRecipe($id)
+    {
+        // dd($id);
+       $this->deleteId = $id;
+       $this->deleteModal = true;
+        
+    }
+
     public function deleteRecipe($id)
     {
         Recipe::find($id)->delete();
+        $this->deleteModal = false;
     }
 
     public function showRecipeModal(){
         $this->reset();
         $this->recipeModal = true;
+        $this->resetValidation();
+
     }
 
     public function addIngredientsAndSteps($id)

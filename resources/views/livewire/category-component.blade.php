@@ -4,8 +4,8 @@
 
     <div class="flex flex-col gap-2 md:flex-row md:gap-24 mb-10 bg-blue-100 p-5 rounded">
         <div class="w-full md:w-2/5 ">
-            <form wire:submit.prevent="addCategory" class="flex ">
-                <div class="flex flex-col">
+            <form wire:submit.prevent="addCategory" class="flex justify-center">
+                <div class="flex flex-col ">
                     @error('name')
                         <span class="text-xs text-red-600">{{$message}}</span>
                     @enderror
@@ -23,7 +23,7 @@
                 <div class="flex items-center bg-yellow-500 m-1 px-2 py-1">
                     <span class="cursor-pointer" wire:click="addToList({{$category->id}})" >{{$category->category}}</span>
                     <span>
-                        <svg wire:click="deleteCategory({{$category->id}})" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                        <svg wire:click="deleteCategory({{$category->id}})" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
                     </svg>
                     </span>
@@ -41,9 +41,9 @@
     
     </div>
 
-    <div class="flex flex-col my-5 bg-blue-100 rounded p-5"> 
+    <div class="flex flex-col md:flex-row my-5 bg-blue-100 rounded p-5 items-center"> 
    
-        <div class="flex flex-col  my-4" >
+        <div class="flex flex-col  my-4 w-full md:w-1/2" >
             <h2 class="font-bold p-2">Selecteer recept uit onze lijst</h2>
             <div class="flex flex-wrap">
                 @foreach ($recipes as $recipe)
@@ -64,7 +64,7 @@
         </div>
         
       
-        <div class="flex flex-col gap-5 my-4 ">
+        <div class="flex flex-col justify-center gap-5 my-4 w-full md:w-1/2">
             <div class="flex">
                 <div class=" flex flex-col items-center rounded w-1/2">
                         <h3 class="font-bold">Geselecteerd Recept</h3>
@@ -90,7 +90,7 @@
                         <div class="flex items-center bg-green-500 m-1 px-2 py-1">
                             <span>{{$value}}</span>
                             <span>
-                                <svg wire:click="removeFromList({{$key}})" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                                <svg wire:click="removeFromList({{$key}})" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
                             </svg>
                             </span>

@@ -1,5 +1,8 @@
 <div>
-    @foreach ($recipes as $recipe)
+    <div class="flex justify-end my-4">
+        <input class="focus:outline-none rounded shadow" type="search" wire:model.debounce.1000ms="search" placeholder="Zoek recept">
+    </div>
+    @forelse ($recipes as $recipe)
         <div class="flex flex-col md:grid grid-cols-2 my-2 md:p-5 bg-gray-100 rounded-lg" >
         
             <div wire:click="showModal({{$recipe->id}})" class="cursor-pointer overflow-none bg-blue-100 rounded">
@@ -24,7 +27,7 @@
                 </div>
                 <div class="flex flex-col px-4" wire:click="showModal({{$recipe->id}})">
                     <img class="self-center w-96 h-64 rounded-lg" src="{{asset('storage/photos/'.$recipe->image_path)}}" alt="">
-                    <p class="text-sm text-center font-semibold">{{$recipe->description}}</p>
+                    <p class="text-sm text-center font-semibold">{{substr($recipe->description, 0, 100)}}..</p>
                 
                 </div>
                 @if (count($recipe->categories) > 0)
@@ -52,7 +55,11 @@
             
 
         </div>
-    @endforeach
+    @empty
+        <div class="my-5">
+            <h2 class="text-center text-3xl">Geen recepten gevonden!</h2>
+        </div>
+    @endforelse
 
    
     {{-- show single modal --}}
@@ -80,7 +87,7 @@
               <h4>{{$modalDescription}}</h4>
           </div>
           <div class="bg-gray-100 p-2 my-2 rounded-lg">
-              <img class="rounded-lg" src="{{asset('storage/photos/'.$modalPhoto)}}" alt="">
+              <img class="rounded-lg h-auto" src="{{asset('storage/photos/'.$modalPhoto)}}" alt="">
           </div>
           <div class="grid grid-cols-2 my-2">
               <div class="bg-gray-100 rounded-lg p-2 mr-1">

@@ -21,6 +21,10 @@ class ShowRecipes extends Component
     public $ingredients = [];
     public $steps = [];
 
+    //search
+    public $search;
+
+    protected $listeners = ['commentUpdated'=>'render'];
     
     public function showModal($id)
     {
@@ -37,6 +41,17 @@ class ShowRecipes extends Component
 
     }
 
+    public function getRecipes()
+    {
+        if($this->search == '' && $this->search == null){
+            return Recipe::all();
+        }else{
+            return Recipe::where('recipe_name','like',"%$this->search%")
+                        ->orWhere('description','like',"%$this->search%")
+                        ->get();
+        }
+    }
+
 
 
     public function avgStarsForEachRecipe()
@@ -51,7 +66,7 @@ class ShowRecipes extends Component
     public function render()
     {
         return view('livewire.show-recipes',[
-            'recipes'=>Recipe::all(),
+            'recipes'=>$this->getRecipes(),
         ]);
     }
 }

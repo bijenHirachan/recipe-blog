@@ -12,7 +12,7 @@ class Comments extends Component
     public $comment;
     public $starSelected;
 
-    // protected $listeners = ['commentAdded'=>'$refresh'];
+    public $editCommentId;
 
     public function selectStar($item)
     {
@@ -47,6 +47,16 @@ class Comments extends Component
             'comment_body'=>$this->comment
         ]);
         
+        $this->updateAvgStars();
+
+        $this->emit('commentUpdated');
+        $this->comment = '';
+        $this->starSelected = '';
+    }
+
+
+    public function updateAvgStars()
+    {
         foreach(Recipe::all() as $recipe)
         {
             $sum = (int)Comment::where('recipe_id', $recipe->id)->sum('stars');
@@ -54,15 +64,47 @@ class Comments extends Component
             
             $avgStars = (int)round($totalComments != 0 ? $sum/$totalComments : 0);
  
-         //    dd($avgStars);
             $recipe->update([
                 'avg_stars'=> $avgStars
             ]);
  
      
         }
+    }
+
+    public function updateComment()
+    {
+        $this->validate([
+            'comment'=>'required'
+        ]);
+        
+        Comment::find($this->editCommentId)->update([
+            'stars'=>$this->starSelected == null || $this->starSelected == '' ? 0 : $this->starSelected,
+            'comment_body'=>$this->comment
+        ]);
+        
+        $this->updateAvgStars();
+
+        $this->emit('commentUpdated');
         $this->comment = '';
         $this->starSelected = '';
+    }
+
+    public function editComment($id)
+    {
+        $this->editCommentId = $id;
+        $currentComment = Comment::find($id);
+        $this->comment = $currentComment->comment_body;
+        $this->starSelected = $currentComment->stars;
+    }
+
+    public function deleteComment($id)
+    {
+        Comment::find($id)->delete();
+
+        $this->updateAvgStars();
+
+        $this->emit('commentUpdated');
     }
 
     public function render()

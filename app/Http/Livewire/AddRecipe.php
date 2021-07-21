@@ -33,8 +33,12 @@ class AddRecipe extends Component
     public $recipeModal = false;
     
     public $addModal = false;
-
     
+
+    //search
+    public $search;
+
+    protected $listeners = ['recipeUpdated'=>'render'];
 
     //to add ingredients and steps
     public $recipeId;
@@ -163,8 +167,10 @@ class AddRecipe extends Component
        
 
         $this->inputs = [];
+    	$this->updateAddedIngredients();
 
-        $this->reset();
+      $this->ingredient = '';
+      $this->quantity="";
         
 
 
@@ -188,31 +194,59 @@ class AddRecipe extends Component
         }
 
         $this->stepInputs = [];
+        $this->updateAddedSteps();
 
-        $this->reset();
+        $this->order = '';
+        $this->step = '';
+ 
 
 
     }
 
+
+    public function updateAddedSteps()
+    {
+        $this->addedSteps = Step::where('recipe_id',$this->recipeId)->orderBy('order','ASC')->get();
+        
+    }
+    public function updateAddedIngredients()
+    {
+        $this->addedIngredients = Ingredient::where('recipe_id', $this->recipeId)->get();
+
+    }
 
     //delete added ingredients and steps
 
     public function deleteAddedIngredient($id)
     {
         Ingredient::find($id)->delete();
-        $this->addedIngredients = Ingredient::where('recipe_id', $this->recipeId)->get();
+        $this->updateAddedIngredients();
     }
 
     public function deleteAddedStep($id)
     {
         Step::find($id)->delete();
-        $this->addedSteps = Step::where('recipe_id',$this->recipeId)->orderBy('order','ASC')->get();
+        $this->updateAddedSteps();
     }
+
+    public function getRecipes()
+    {
+        if($this->search == '' && $this->search == null)
+        {
+            return Recipe::all();
+        }else{
+            return Recipe::where('recipe_name','like',"%$this->search%")
+                        ->orWhere('description','like',"%$this->search%")
+                        ->get();
+        }
+      
+    }
+
 
     public function render()
     {
         return view('livewire.add-recipe',[
-            'recipes'=>Recipe::all()
+            'recipes'=> $this->getRecipes()
         ]);
     }
 }

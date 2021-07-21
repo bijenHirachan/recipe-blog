@@ -1,6 +1,6 @@
 <x-guest-layout>
     <div class="">
-        <div class="mx-5 my-20 p-10 bg-gray-100 rounded">
+        <div class="mx-5 my-20 p-10 bg-blue-50 rounded">
             
             <div class="">
               <h3 class="text-center font-semibold text-2xl text-gray-500">Welkom bij mijn</h3>

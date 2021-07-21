@@ -342,7 +342,7 @@
                 {{ __('Annuleren') }}
             </x-jet-secondary-button>
 
-            <x-jet-danger-button class="ml-2" wire:click="deleteRecipe({{$deleteId}})" wire:loading.attr="disabled">
+            <x-jet-danger-button class="ml-2" wire:click="deleteRecipe({{$deleteIdcls}})" wire:loading.attr="disabled">
                 {{ __('Verwijderen') }}
             </x-jet-danger-button>
         </x-slot>

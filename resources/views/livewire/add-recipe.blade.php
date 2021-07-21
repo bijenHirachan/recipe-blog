@@ -32,7 +32,7 @@
                             <td class="col-span-4 border-2 border-gray-400 pl-2 flex justify-start items-center">{{substr($recipe->description, 0, 100)}}..</td>
                             <td class="col-span-3 border-2 border-gray-400 flex flex-col justify-center ">
                                 <button class="bg-green-400 mx-2 my-1 rounded font-bold text-gray-100 hover:bg-green-600" wire:click="editRecipe({{$recipe->id}})">Edit</button>
-                                <button class="bg-red-400 mx-2 my-1 rounded font-bold text-gray-100 hover:bg-red-600" wire:click="deleteRecipe({{$recipe->id}})">Delete</button>
+                                <button class="bg-red-400 mx-2 my-1 rounded font-bold text-gray-100 hover:bg-red-600" wire:click="confirmDeleteRecipe({{$recipe->id}})">Delete</button>
                                 <button class="bg-indigo-400 mx-2 my-1 rounded font-bold text-gray-100 hover:bg-indigo-600" wire:click="addIngredientsAndSteps({{$recipe->id}})">Add ingredients and steps</button>
                             </td>
                         </tr>
@@ -342,7 +342,7 @@
                 {{ __('Annuleren') }}
             </x-jet-secondary-button>
 
-            <x-jet-danger-button class="ml-2" wire:click="deleteRecipe({{$deleteIdcls}})" wire:loading.attr="disabled">
+            <x-jet-danger-button class="ml-2" wire:click="deleteRecipe({{$deleteId}})" wire:loading.attr="disabled">
                 {{ __('Verwijderen') }}
             </x-jet-danger-button>
         </x-slot>

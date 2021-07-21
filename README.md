@@ -8,8 +8,8 @@ Follow these steps to use this app.
 1. Download the zip file.
 2. Extract it.
 3. Open it with editor of your choice.
-4. Run the command below to install the dependencies. You must have composer installed in your system to run this command.
-    	composer install
+4. Run the command below to install the dependencies. You must have composer installed in your system to run this command.<br>
+    	<strong>composer install</strong>
 5. Copy all the contents of ".env.example" file to a new ".env" file.
 6. Set up your database in the .env file as shown below with valid credentials.
 		DB_CONNECTION=mysql

@@ -18,7 +18,7 @@
         
         <div class="w-full md:w-3/5 ">
             <h2 class="text-center text-3xl mb-3">Onze Categorieën</h2>
-            <div class="flex flex-wrap items-center">
+            <div class="flex flex-wrap items-center justify-center">
                 @forelse ($categories as $category)
                 <div class="flex items-center bg-yellow-500 m-1 px-2 py-1">
                     <span class="cursor-pointer" wire:click="addToList({{$category->id}})" >{{$category->category}}</span>

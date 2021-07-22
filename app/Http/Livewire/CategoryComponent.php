@@ -13,10 +13,11 @@ class CategoryComponent extends Component
 
     public $name;
     public $selectedRecipe;
-    // public $selectedRecipeCategories = [];
     public $recipeId;
     public $selectedCategories = [];
     public $selectedCatIds = [];
+
+    protected $listeners = ['catRecipeUpdated'=>'render'];
 
     public function addCategory()
     {
@@ -27,6 +28,7 @@ class CategoryComponent extends Component
         Category::create([
             'category'=>$this->name
         ]);
+        $this->emit('catRecipeUpdated');
 
         $this->reset();
     }
@@ -35,13 +37,14 @@ class CategoryComponent extends Component
     public function deleteCategory($id)
     {
         Category::find($id)->delete();
+        $this->emit('catRecipeUpdated');
     }
 
     public function selectRecipe($id)
     {
         $this->recipeId = $id;
         $this->selectedRecipe = Recipe::find($id);
-        // $this->selectedRecipeCategories = Categories::find($id)->
+       
         
     }
 
@@ -61,7 +64,15 @@ class CategoryComponent extends Component
 
     public function addCategoriesToRecipe()
     {
+
         if(count($this->selectedCategories) > 0 && $this->recipeId){
+            if(!$this->checkCategories()[0])
+            {
+                $index = array_search($this->checkCategories()[1], $this->selectedCatIds);
+                session()->flash('catExist', $this->selectedCategories[$index].' already exist for this recipe!');
+                return;
+            }
+
             foreach($this->selectedCatIds as $id)
             {
                 CategoryRecipe::create([
@@ -69,6 +80,8 @@ class CategoryComponent extends Component
                     'category_id'=>$id
                 ]);
             }
+            $this->emit('catRecipeUpdated');
+
             session()->flash('success','Categorieën toegevoegd aan het recept.');
 
         }
@@ -78,7 +91,35 @@ class CategoryComponent extends Component
 
         $this->selectedCategories = [];
         $this->selectedCatIds = [];
-        $this->reset();
+        // $this->reset();
+    }
+
+
+    public function deleteCategoryFromRecipe($recipeId, $catId)
+    {
+        CategoryRecipe::where('recipe_id',$recipeId)
+            ->where('category_id', $catId)
+            ->delete();
+
+        $this->emit('catRecipeUpdated');
+    }
+
+    public function checkCategories()
+    {
+        $categories = CategoryRecipe::where('recipe_id', $this->recipeId)->get();
+        
+        foreach($categories as $category)
+        {
+            foreach($this->selectedCatIds as $catId)
+            {
+                // dd($catId, $category->category_id);
+                if($category->category_id == $catId)
+                {
+                    return [false,$catId];
+                }
+            }
+        }
+        return [true];
     }
 
     public function render()

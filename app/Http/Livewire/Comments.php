@@ -86,6 +86,7 @@ class Comments extends Component
         $this->updateAvgStars();
 
         $this->emit('commentUpdated');
+        $this->editCommentId = '';
         $this->comment = '';
         $this->starSelected = '';
     }

@@ -92,6 +92,7 @@ class Comments extends Component
 
     public function editComment($id)
     {
+    // dd($id);
         $this->editCommentId = $id;
         $currentComment = Comment::find($id);
         $this->comment = $currentComment->comment_body;

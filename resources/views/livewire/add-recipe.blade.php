@@ -118,20 +118,20 @@
                         <div class="flex my-2">
                         
                             <label for="photo" class="w-36 font-bold hover:text-gray-400 cursor-pointer">Upload Foto</label>
-                            <input type="file" id="photo" wire:model="updatedPhoto" hidden>
+                            <input type="file" id="photo" wire:model.lazy="updatedPhoto" hidden>
                             @error('updatedPhoto') <span class="error my-2 text-xs text-red-600">{{ $message }}</span> @enderror
                             
                         
                         </div>
                         <div  class="flex flex-col ">
                             <label for="recipe">Recept</label>
-                            <input type="text" wire:model="recipe" class="focus:outline-none rounded">
+                            <input type="text" wire:model.lazy="recipe" class="focus:outline-none rounded">
                             @error('recipe') <span class="error my-2 text-xs text-red-600">{{ $message }}</span> @enderror
                         
                         </div>
                         <div class="flex flex-col focus:outline-none">
                             <label for="description">Omschrijving</label>
-                            <textarea wire:model="description" cols="30"  class="focus:outline-none overflow-y-scroll rounded"></textarea>
+                            <textarea wire:model.lazy="description" cols="30"  class="focus:outline-none overflow-y-scroll rounded"></textarea>
                             @error('description') <span class="error my-2 text-xs text-red-600">{{ $message }}</span> @enderror
                         
                         </div>
@@ -145,20 +145,20 @@
                         <div class="flex my-2">
                         
                             <label for="photo" class="w-36 font-bold hover:text-gray-400 cursor-pointer">Upload Foto</label>
-                            <input type="file" id="photo" wire:model="photo" hidden>
+                            <input type="file" id="photo" wire:model.lazy="photo" hidden>
                             @error('photo') <span class="error my-2 text-xs text-red-600">{{ $message }}</span> @enderror
                             
                         
                         </div>
                         <div  class="flex flex-col ">
                             <label for="recipe">Recept</label>
-                            <input type="text" wire:model="recipe" class="focus:outline-none rounded">
+                            <input type="text" wire:model.lazy="recipe" class="focus:outline-none rounded">
                             @error('recipe') <span class="error my-2 text-xs text-red-600">{{ $message }}</span> @enderror
                         
                         </div>
                         <div class="flex flex-col focus:outline-none">
                             <label for="description">Omschrijving</label>
-                            <textarea wire:model="description" cols="30"  class="focus:outline-none overflow-y-scroll rounded"></textarea>
+                            <textarea wire:model.lazy="description" cols="30"  class="focus:outline-none overflow-y-scroll rounded"></textarea>
                             @error('description') <span class="error my-2 text-xs text-red-600">{{ $message }}</span> @enderror
                         
                         </div>
